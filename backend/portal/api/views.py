@@ -6,6 +6,8 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 
+import json
+
 # For customizing the token claims: (whatever value we want)
 # Refer here for more details: https://django-rest-framework-simplejwt.readthedocs.io/en/latest/customizing_token_claims.html
 
@@ -29,6 +31,19 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
+
+# To display temporary data
+@api_view(['GET'])
+def getData(request):
+
+    data = {
+        'name' : 'Anubhav',
+        'profession' : 'Developer',
+        'country' : 'India'
+    }
+
+    response = json.dumps(data)
+    return Response(response)
 
 
 # -------For DRF view --------------
