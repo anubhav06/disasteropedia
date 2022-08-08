@@ -8,6 +8,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 import json
 
+from portal.models import Tweet
+
 # For customizing the token claims: (whatever value we want)
 # Refer here for more details: https://django-rest-framework-simplejwt.readthedocs.io/en/latest/customizing_token_claims.html
 
@@ -44,6 +46,30 @@ def getData(request):
 
     response = json.dumps(data)
     return Response(response)
+
+
+# To add a tweet to DB
+@api_view(['POST'])
+def add_tweet(request):
+
+    text = request.data['text']
+    link = request.data['link']
+    media = request.data['media']
+    username = request.data['username']
+ 
+    print('text: ', text)
+    print('link: ', link)
+    print('media: ', media)
+    print('username: ', username)
+    
+    try:
+        tweet = Tweet(text=text, link=link, media=media, username=username)
+        tweet.save()
+    except:
+        return Response({'⚠️ ERROR: Unable to save tweet'})
+
+    return Response({'Tweet added to database'})
+
 
 
 # -------For DRF view --------------
