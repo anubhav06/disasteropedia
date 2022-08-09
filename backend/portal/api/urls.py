@@ -13,8 +13,9 @@ from rest_framework_simplejwt.views import (
 urlpatterns = [ 
     # To display a list of available API routes through DRF
     path('', views.getRoutes, name="index"),
-    path('data/', views.getData, name='data'),
+    
     path('add-tweet/', views.add_tweet, name='addTweet'),
+    path('get-tweet/', views.get_tweet, name='getTweet'),
 
     # For user authentication
     path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),

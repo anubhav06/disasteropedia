@@ -6,9 +6,10 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 
-import json
+import re
 
 from portal.models import Tweet
+from portal.api.serializers import TweetSerializer
 
 # For customizing the token claims: (whatever value we want)
 # Refer here for more details: https://django-rest-framework-simplejwt.readthedocs.io/en/latest/customizing_token_claims.html
@@ -34,19 +35,6 @@ class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
 
-# To display temporary data
-@api_view(['GET'])
-def getData(request):
-
-    data = {
-        'name' : 'Anubhav',
-        'profession' : 'Developer',
-        'country' : 'India'
-    }
-
-    response = json.dumps(data)
-    return Response(response)
-
 
 # To add a tweet to DB
 @api_view(['POST'])
@@ -55,20 +43,36 @@ def add_tweet(request):
     text = request.data['text']
     link = request.data['link']
     media = request.data['media']
+    media_type = request.data['mediaType']
     username = request.data['username']
- 
+    created_at = request.data['created_at']
+    
+    # Remove the links from the text
+    text = re.sub(r'http\S+', '', text)
+
     print('text: ', text)
     print('link: ', link)
     print('media: ', media)
     print('username: ', username)
+    print('created_at: ', created_at)
     
     try:
-        tweet = Tweet(text=text, link=link, media=media, username=username)
+        tweet = Tweet(text=text, link=link, media=media, media_type=media_type, username=username, created_at=created_at)
         tweet.save()
     except:
         return Response({'⚠️ ERROR: Unable to save tweet'})
 
     return Response({'Tweet added to database'})
+
+
+# To view all the tweets
+@api_view(['GET'])
+def get_tweet(request):
+
+    tweet = Tweet.objects.all()
+    serializer = TweetSerializer(tweet, many=True)
+
+    return Response(serializer.data)
 
 
 

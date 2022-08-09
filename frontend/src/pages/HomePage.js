@@ -1,40 +1,35 @@
-import React, {useState, useEffect}from 'react'
+import React, { useContext } from 'react'
+import AuthContext from '../context/AuthContext'
 
 const HomePage = () => {
 
-    let [data, setData] = useState([])
-
-    useEffect(()=> {
-        
-        
-        // To fetch all the restaurants
-        let getData = async() =>{
-            let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/data/`, {
-                method:'GET',
-                headers:{
-                    'Content-Type':'application/json',
-                }
-            })
-            let data = await response.json()
-
-            if(response.status === 200){
-                setData(data)
-            } else {
-                console.log('SOME ERROR WHILE GETTING DATA')
-            }
-            
-        }
-        
-        getData()
-
-    }, [])
-
+    let { tweets } = useContext(AuthContext)
     
-    console.log('data: ', data)
+    console.log('tweet: ', tweets)
+
     return (
         <div>
-            This is the home page!
-            <p> Data recieved from backend: {data}  </p>
+            <h1> Below tweets are received from the server and updated in real time </h1>
+            {tweets.map((tweet) => (
+                <div key={tweet.id}>
+                    <p> {tweet.username} says {tweet.text} </p>
+                    <a href={tweet.link}> Go to tweet </a>
+                    <p> Posted on {tweet.created_at}</p>
+                    {tweet.media_type === 'photo'
+                    ?   <div>
+                            <img src={tweet.media} width="320" height="240" alt='tweet media'/>
+                        </div>
+                    :   <div>    
+                            <video width="320" height="240" controls>
+                                <source src={tweet.media} type="video/mp4" />
+                                Your browser does not support this video tag.
+                            </video>
+                        </div>
+                    }
+                    <hr/>
+                    <br/><br/>
+                </div>
+            ))}
         </div>
     )
 }

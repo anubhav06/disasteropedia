@@ -1,14 +1,17 @@
 import './App.css';
 import { Routes, Route} from "react-router-dom";
 import HomePage from './pages/HomePage';
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
   return (
     <div className="App">
-      <h1>Welcome to React Router!</h1>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-      </Routes>
+      
+      <AuthProvider>
+        <Routes>
+            <Route path="/" element={<HomePage />} />
+        </Routes>
+      </AuthProvider>
     </div>
   );
 }
