@@ -66,7 +66,7 @@ def validate_tweet(text):
             # Checks if the page's title consists of the place and if the place is an Indian state.
             # Refer to wikipedia's API to understand the API parameters in detail: https://www.mediawiki.org/wiki/API:Search
             for page in data['query']['search']:
-                if (place.lower() in page['title'].lower() or page['title'].lower() in place.lower()) and ('Indian state' or 'India' in page['snippet']):
+                if (place.lower() in page['title'].lower() or page['title'].lower() in place.lower()) and ('Indian state' in page['snippet'] or 'India' in page['snippet']):
                     return True
         except:
             print('🔴 ERROR: In tweet filteration level #3')
