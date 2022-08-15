@@ -22,13 +22,21 @@ def validate_tweet(text):
 
     # ----------- Tweet filteration Level #2 (out of 3) -------------
     # Level-2: Checks if the tweet contains a place of disaster. ----
-        
+
+    # Try-1
+    for index, token in enumerate(doc):
+        # Checks for India specific local places compound names
+        if token.text.lower() in ["vihar", "nagar", "sarai", "enclave", "chowk", "bagh"]:
+            place.append(doc[index-1].text + " " + token.text)
+    
+    # Try-2
     for ent in doc.ents:
         print(ent.text, ent.start_char, ent.end_char, ent.label_)
-        # If the entity is a place i.e is of type 'organization' or 'geo-polical-entity', then add that entity in the list
-        if ent.label_ == 'ORG' or ent.label_ == 'GPE':
+        # If the entity is a place i.e is of type 'organization' or 'geo-polical-entity' or 'national/religious/political group', then add that entity in the list
+        if ent.label_ in ['ORG', 'GPE', 'NORP']:
             place.append(ent)
     
+    # Try-3
     if len(doc.ents) == 0:
         for token in doc:
             # If the text contains a proper noun, then add it to the list
@@ -66,7 +74,7 @@ def validate_tweet(text):
             # Checks if the page's title consists of the place and if the place is an Indian state.
             # Refer to wikipedia's API to understand the API parameters in detail: https://www.mediawiki.org/wiki/API:Search
             for page in data['query']['search']:
-                if (place.lower() in page['title'].lower() or page['title'].lower() in place.lower()) and ('Indian state' in page['snippet'] or 'India' in page['snippet']):
+                if (place.lower() in page['title'].lower() or page['title'].lower() in place.lower()) and ('Indian state' in page['snippet'] or ', India' in page['snippet']):
                     return True
         except:
             print('🔴 ERROR: In tweet filteration level #3')
@@ -112,7 +120,7 @@ def add_tweet(request):
 @api_view(['GET'])
 def get_tweet(request):
 
-    tweet = Tweet.objects.all()
+    tweet = Tweet.objects.all().order_by('-id')
     serializer = TweetSerializer(tweet, many=True)
 
     return Response(serializer.data)
