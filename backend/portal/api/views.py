@@ -161,7 +161,9 @@ def get_state_tweets(request, state):
     tweet = Tweet.objects.filter(tweet_state = state)
     serializer = TweetSerializer(tweet, many=True)
 
-    return Response(serializer.data)
+    disaster_type = Tweet.objects.values("disaster_type").distinct()
+
+    return Response([disaster_type, serializer.data])
 
 
 # -------For DRF view --------------
@@ -171,7 +173,7 @@ def getRoutes(request):
         '/api/',
         '/api/add-tweet/',
         '/api/get-tweets/',
-        'api/ get-tweet/<str:state>/'
+        'api/get-tweet/<str:state>/'
     ]
 
     return Response(routes)
