@@ -7,6 +7,7 @@ urlpatterns = [
     path('', views.getRoutes, name="index"),
     
     path('add-tweet/', views.add_tweet, name='addTweet'),
-    path('get-tweet/', views.get_tweet, name='getTweet'),
+    path('get-tweets/', views.get_tweets, name='getTweet'),
+    path('get-tweet/<str:state>/', views.get_state_tweets, name='getStateTweets')
 
 ]

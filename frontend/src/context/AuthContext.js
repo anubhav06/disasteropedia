@@ -25,7 +25,7 @@ export const AuthProvider = ({children}) => {
         let updateTweet = async ()=> {
 
             // Make a post request to the api with the refresh token to update the access token
-            let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/get-tweet/`, {
+            let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/get-tweets/`, {
                 method:'GET'
             })
             let data = await response.json()

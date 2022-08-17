@@ -74,8 +74,20 @@ def validate_tweet(text):
             # Checks if the page's title consists of the place and if the place is an Indian state.
             # Refer to wikipedia's API to understand the API parameters in detail: https://www.mediawiki.org/wiki/API:Search
             for page in data['query']['search']:
-                if (place.lower() in page['title'].lower() or page['title'].lower() in place.lower()) and ('Indian state' in page['snippet'] or ', India' in page['snippet']):
-                    return True
+                if ('Indian state' not in page['snippet'] or ', India' not in page['snippet']):
+                    return False
+                
+                # Find the name of the state in India
+                state = re.findall("indian state of assam|andhra pradesh|arunachal pradesh|bihar|chhattisgarh|delhi|goa|gujarat|haryana|himachal pradesh|jammu & kashmir|jharkhand|karnataka|kerala|madhya pradesh|maharashtra|manipur|meghalaya|mizoram|nagaland|odisha|punjab|rajasthan|sikkim|tamil nadu|telangana|tripura|uttar pradesh|west bengal|uttarakhand", page['snippet'].lower())
+                if len(state) != 0:
+                    tweet_state = state[0]
+                else:
+                    state = re.findall("assam|andhra pradesh|arunachal pradesh|bihar|chhattisgarh|delhi|goa|gujarat|haryana|himachal pradesh|jammu & kashmir|jharkhand|karnataka|kerala|madhya pradesh|maharashtra|manipur|meghalaya|mizoram|nagaland|odisha|punjab|rajasthan|sikkim|tamil nadu|telangana|tripura|uttar pradesh|west bengal|uttarakhand, india", page['snippet'].lower())
+                    if len(state) != 0:
+                        tweet_state = state[0]
+                    else:
+                        tweet_state = 'NA'
+                return tweet_state.title()
         except:
             print('🔴 ERROR: In tweet filteration level #3')
 
@@ -100,6 +112,7 @@ def add_tweet(request):
     text = re.sub('#', '', text)
 
 
+
     # Validate if the tweet is relevant i.e. if it is related to a disaster, by passing it through the "algorithm"
     result = validate_tweet(text)
     if result is False:
@@ -108,7 +121,7 @@ def add_tweet(request):
 
     # Proceed to save the tweet if it's relevant i.e. related to a disaster
     try:
-        tweet = Tweet(text=text, link=link, media=media, media_type=media_type, username=username, created_at=created_at)
+        tweet = Tweet(text=text, link=link, media=media, media_type=media_type, username=username, created_at=created_at, tweet_state=result)
         tweet.save()
     except:
         return Response({'⚠️ ERROR: Unable to save tweet'})
@@ -118,7 +131,7 @@ def add_tweet(request):
 
 # To view all the tweets
 @api_view(['GET'])
-def get_tweet(request):
+def get_tweets(request):
 
     tweet = Tweet.objects.all().order_by('-id')
     serializer = TweetSerializer(tweet, many=True)
@@ -126,13 +139,24 @@ def get_tweet(request):
     return Response(serializer.data)
 
 
+# To get the tweets of the state
+@api_view(['GET'])
+def get_state_tweets(request, state):
+    
+    tweet = Tweet.objects.filter(tweet_state = state)
+    serializer = TweetSerializer(tweet, many=True)
+
+    return Response(serializer.data)
+
 
 # -------For DRF view --------------
 @api_view(['GET'])
 def getRoutes(request):
     routes = [
-        '/api/token/',
-        '/api/token/refresh/',
+        '/api/',
+        '/api/add-tweet/',
+        '/api/get-tweets/',
+        'api/ get-tweet/<str:state>/'
     ]
 
     return Response(routes)
