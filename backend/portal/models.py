@@ -11,6 +11,7 @@ class Tweet(models.Model):
     created_at = models.DateTimeField()
     # Name of the state of the country, which the tweet refers to
     tweet_state = models.CharField(max_length=36)
+    disaster_type = models.CharField(max_length=48)
 
     def __str__(self):
         return f"Tweet by {self.username} on {self.created_at}"

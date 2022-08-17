@@ -73,21 +73,23 @@ def validate_tweet(text):
 
             # Checks if the page's title consists of the place and if the place is an Indian state.
             # Refer to wikipedia's API to understand the API parameters in detail: https://www.mediawiki.org/wiki/API:Search
+            tweet_state = ''
             for page in data['query']['search']:
                 if ('Indian state' not in page['snippet'] or ', India' not in page['snippet']):
-                    return False
-                
-                # Find the name of the state in India
-                state = re.findall("indian state of assam|andhra pradesh|arunachal pradesh|bihar|chhattisgarh|delhi|goa|gujarat|haryana|himachal pradesh|jammu & kashmir|jharkhand|karnataka|kerala|madhya pradesh|maharashtra|manipur|meghalaya|mizoram|nagaland|odisha|punjab|rajasthan|sikkim|tamil nadu|telangana|tripura|uttar pradesh|west bengal|uttarakhand", page['snippet'].lower())
-                if len(state) != 0:
-                    tweet_state = state[0]
+                    tweet_state = False
                 else:
-                    state = re.findall("assam|andhra pradesh|arunachal pradesh|bihar|chhattisgarh|delhi|goa|gujarat|haryana|himachal pradesh|jammu & kashmir|jharkhand|karnataka|kerala|madhya pradesh|maharashtra|manipur|meghalaya|mizoram|nagaland|odisha|punjab|rajasthan|sikkim|tamil nadu|telangana|tripura|uttar pradesh|west bengal|uttarakhand, india", page['snippet'].lower())
+                    # Find the name of the state in India
+                    state = re.findall("indian state of assam|andhra pradesh|arunachal pradesh|bihar|chhattisgarh|delhi|goa|gujarat|haryana|himachal pradesh|jammu & kashmir|jharkhand|karnataka|kerala|madhya pradesh|maharashtra|manipur|meghalaya|mizoram|nagaland|odisha|<span class=\"searchmatch\">Odisha|punjab|rajasthan|sikkim|tamil nadu|telangana|tripura|uttar pradesh|west bengal|uttarakhand", page['snippet'].lower())
                     if len(state) != 0:
                         tweet_state = state[0]
                     else:
-                        tweet_state = 'NA'
-                return tweet_state.title()
+                        state = re.findall("assam|andhra pradesh|arunachal pradesh|bihar|chhattisgarh|delhi|goa|gujarat|haryana|himachal pradesh|jammu & kashmir|jharkhand|karnataka|kerala|madhya pradesh|maharashtra|manipur|meghalaya|mizoram|nagaland|odisha|punjab|rajasthan|sikkim|tamil nadu|telangana|tripura|uttar pradesh|west bengal|uttarakhand, india", page['snippet'].lower())
+                        if len(state) != 0:
+                            tweet_state = state[0].title()
+                        else:
+                            tweet_state = 'NA'
+
+            return tweet_state
         except:
             print('🔴 ERROR: In tweet filteration level #3')
 
@@ -111,17 +113,30 @@ def add_tweet(request):
     # Remove the hashtag from the text
     text = re.sub('#', '', text)
 
-
-
+ 
     # Validate if the tweet is relevant i.e. if it is related to a disaster, by passing it through the "algorithm"
     result = validate_tweet(text)
     if result is False:
         print('Discarded tweet-', text, 'by @', username)
         return Response({'ℹ️ Tweet irrelevant'})
 
+    # Find the disaster type from the tweet's text
+    disaster_type = re.findall("flood|floods|flooded|flooding|wildfire|wildfires|eartquake|earthquakes|tornado|tornadoes|tornados|hurricane|hurricanes|drought|droughts|tsunami|tsunamis|landslide|landslides", text.lower())[0]
+    
+    # Trim the plural forms of the disaster type
+    if disaster_type.endswith('es'):
+        disaster_type = disaster_type[:-2]
+    elif disaster_type.endswith('s'):
+        disaster_type = disaster_type[:-1]
+    elif disaster_type.endswith('ed'):
+        disaster_type = disaster_type[:-2]
+    elif disaster_type.endswith('ing'):
+        disaster_type = disaster_type[:-3]
+        
+
     # Proceed to save the tweet if it's relevant i.e. related to a disaster
     try:
-        tweet = Tweet(text=text, link=link, media=media, media_type=media_type, username=username, created_at=created_at, tweet_state=result)
+        tweet = Tweet(text=text, link=link, media=media, media_type=media_type, username=username, created_at=created_at, tweet_state=result, disaster_type=disaster_type)
         tweet.save()
     except:
         return Response({'⚠️ ERROR: Unable to save tweet'})
