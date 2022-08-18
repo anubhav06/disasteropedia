@@ -4,21 +4,27 @@ import AuthContext from '../context/AuthContext'
 import Grid2 from '@mui/material/Unstable_Grid2'; // Grid version 2
 import Pagination from '@mui/material/Pagination';
 import TwitterIcon from '../assets/twitter_icon.png';
+
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
-import ListSubheader from '@mui/material/ListSubheader';
 import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
 
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
 const HomePage = () => {
 
-    let { tweets, pageCount, disasterType, disasterArea, setPageNo, setPageCount, setTweets} = useContext(AuthContext)
+    let { tweets, pageCount, disasterType, disasterArea, queryState, setPageNo, setPageCount, setTweets, setQueryState} = useContext(AuthContext)
     
     let handleChange = async (event, value) => {
         setPageNo(value);
         // Make a post request to the api to update the tweets
-        let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/get-tweets/?page=${value}`, {
+        let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/get-tweet/${queryState}/?page=${value}`, {
             method:'GET'
         })
         let data = await response.json()
@@ -31,6 +37,22 @@ const HomePage = () => {
         }
     };
     
+    let handleSelectChange = async (event) => {
+        let value = event.target.value;
+        setQueryState(event.target.value);
+        // Make a post request to the api to update the tweets
+        let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/get-tweet/${value}`, {
+            method:'GET'
+        })
+        let data = await response.json()
+        
+        if (response.status === 200) {   
+            setTweets(data[0])
+            setPageCount(data[1])
+        }else{
+            console.log('ERROR: Getting tweet data from server')
+        }
+    };
 
     console.log('tweet: ', tweets)
 
@@ -41,7 +63,23 @@ const HomePage = () => {
                     <div>disasteropedia</div>
                 </Grid2>
                 <Grid2 xs={3}>
-                    <div>Dropdown menu</div>
+                    <Box sx={{ minWidth: 120 }}>
+                    <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">Location</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={queryState}
+                            label="Age"
+                            onChange={handleSelectChange}
+                        >
+                        <MenuItem value={'All'}>All India</MenuItem>
+                        {disasterArea.map((area) => (
+                            <MenuItem value={area.tweet_state}>{area.tweet_state}</MenuItem>
+                        ))}
+                        </Select>
+                    </FormControl>
+                    </Box>
                 </Grid2>
                 <Grid2 xs={1}>
                     <div>Support Icon</div>

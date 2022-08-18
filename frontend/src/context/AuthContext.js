@@ -16,15 +16,19 @@ export const AuthProvider = ({children}) => {
     let [disasterType, setDisasterType] = useState([])
     let [disasterArea, setDisasterArea] = useState([])
 
+    let [queryState, setQueryState] = useState('All')
+
     // Context data for AuthContext so that it can be used in other pages
     let contextData = {
         tweets: tweets,
         pageCount: pageCount,
         disasterType: disasterType,
         disasterArea: disasterArea,
+        queryState: queryState,
         setPageNo: setPageNo,
         setTweets: setTweets,
         setPageCount: setPageCount,
+        setQueryState: setQueryState
     }
 
 
@@ -34,7 +38,7 @@ export const AuthProvider = ({children}) => {
         // --------------------------- updateToken method  ----------------------------------------
         let updateTweet = async ()=> {
             // Make a post request to the api to update the tweets
-            let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/get-tweets/?page=${pageNo}`, {
+            let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/get-tweet/${queryState}/?page=${pageNo}`, {
                 method:'GET'
             })
             let data = await response.json()
@@ -67,7 +71,7 @@ export const AuthProvider = ({children}) => {
         // Clear the interval after firing preventing re-initializing every time, refer to docs for more details
         return ()=> clearInterval(interval)
 
-    }, [loading, pageNo])
+    }, [loading, pageNo, queryState])
 
     return(
         <AuthContext.Provider value={contextData} >
