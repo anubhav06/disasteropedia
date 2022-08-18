@@ -51,6 +51,12 @@ def validate_tweet(text):
     # ----------- Tweet filteration Level #3 (out of 3) ------------
     # Level-3: Confirms if the place of disaster is in India -------
     for place in place:
+
+        # Check if the place name is a state of India
+        find_state = re.findall("assam|andhra pradesh|arunachal pradesh|bihar|chhattisgarh|delhi|goa|gujarat|haryana|himachal pradesh|jammu & kashmir|jharkhand|karnataka|kerala|madhya pradesh|maharashtra|manipur|meghalaya|mizoram|nagaland|odisha|<span class=\"searchmatch\">odisha|punjab|rajasthan|sikkim|tamil nadu|telangana|tripura|uttar pradesh|west bengal|uttarakhand", str(place).lower())
+        if len(find_state) != 0:
+            return find_state[0]
+
         params = {
             'action': 'query',
             'list': 'search',
@@ -75,25 +81,26 @@ def validate_tweet(text):
             # Refer to wikipedia's API to understand the API parameters in detail: https://www.mediawiki.org/wiki/API:Search
             tweet_state = ''
             for page in data['query']['search']:
-                if ('Indian state' not in page['snippet'] or ', India' not in page['snippet']):
+                if ('Indian state' not in page['snippet'] and ', India' not in page['snippet']):
                     tweet_state = False
                 else:
                     # Find the name of the state in India
-                    state = re.findall("indian state of assam|andhra pradesh|arunachal pradesh|bihar|chhattisgarh|delhi|goa|gujarat|haryana|himachal pradesh|jammu & kashmir|jharkhand|karnataka|kerala|madhya pradesh|maharashtra|manipur|meghalaya|mizoram|nagaland|odisha|<span class=\"searchmatch\">Odisha|punjab|rajasthan|sikkim|tamil nadu|telangana|tripura|uttar pradesh|west bengal|uttarakhand", page['snippet'].lower())
+                    state = re.findall("indian state of assam|andhra pradesh|arunachal pradesh|bihar|chhattisgarh|delhi|goa|gujarat|haryana|himachal pradesh|jammu & kashmir|jharkhand|karnataka|kerala|madhya pradesh|maharashtra|manipur|meghalaya|mizoram|nagaland|odisha|<span class=\"searchmatch\">odisha|punjab|rajasthan|sikkim|tamil nadu|telangana|tripura|uttar pradesh|west bengal|uttarakhand", page['snippet'].lower())
                     if len(state) != 0:
                         tweet_state = state[0]
+                        return tweet_state
                     else:
                         state = re.findall("assam|andhra pradesh|arunachal pradesh|bihar|chhattisgarh|delhi|goa|gujarat|haryana|himachal pradesh|jammu & kashmir|jharkhand|karnataka|kerala|madhya pradesh|maharashtra|manipur|meghalaya|mizoram|nagaland|odisha|punjab|rajasthan|sikkim|tamil nadu|telangana|tripura|uttar pradesh|west bengal|uttarakhand, india", page['snippet'].lower())
                         if len(state) != 0:
                             tweet_state = state[0].title()
+                            return tweet_state
                         else:
                             tweet_state = 'NA'
 
-            return tweet_state
         except:
             print('🔴 ERROR: In tweet filteration level #3')
 
-    return False
+    return tweet_state
 
 
 
