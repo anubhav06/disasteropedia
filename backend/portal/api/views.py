@@ -97,7 +97,7 @@ def validate_tweet(text):
                             tweet_state = state[0].title()
                             return tweet_state
                         else:
-                            tweet_state = 'NA'
+                            tweet_state = 'Unidentified'
 
         except:
             print('🔴 ERROR: In tweet filteration level #3')
@@ -153,12 +153,16 @@ def add_tweet(request):
     return Response({'✅ Tweet added to database'})
 
 
-# To view all the tweets
+# To get the tweets by the state name
 @api_view(['GET'])
-def get_tweets(request):
-
-    tweet = Tweet.objects.all().order_by('-id')
-
+def get_state_tweets(request, state):
+    
+    if state == 'All':
+        tweet = Tweet.objects.all().order_by('-id')
+    else:
+        tweet = Tweet.objects.filter(tweet_state = state).order_by('-id')
+    
+    # Pagination. Limit results to 4 per page
     p = Paginator(tweet, 4)
     try:
         page_num = request.query_params['page']
@@ -168,24 +172,12 @@ def get_tweets(request):
         page = p.page(page_num)
     except EmptyPage:
         page = p.page(1)
+        
     serializer = TweetSerializer(page, many=True)
-
     disaster_type = Tweet.objects.values("disaster_type").distinct()
     tweet_state = Tweet.objects.values("tweet_state").distinct()
 
     return Response([serializer.data, p.num_pages, disaster_type, tweet_state])
-
-
-# To get the tweets of the state
-@api_view(['GET'])
-def get_state_tweets(request, state):
-    
-    tweet = Tweet.objects.filter(tweet_state = state)
-    serializer = TweetSerializer(tweet, many=True)
-
-    disaster_type = Tweet.objects.values("disaster_type").distinct()
-
-    return Response([disaster_type, serializer.data])
 
 
 # -------For DRF view --------------
@@ -194,8 +186,7 @@ def getRoutes(request):
     routes = [
         '/api/',
         '/api/add-tweet/',
-        '/api/get-tweets/',
-        'api/get-tweet/<str:state>/'
+        '/api/get-tweet/<str:state>/'
     ]
 
     return Response(routes)
