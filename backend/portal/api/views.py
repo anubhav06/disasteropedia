@@ -4,6 +4,8 @@ from rest_framework.decorators import api_view
 from portal.models import Tweet
 from portal.api.serializers import TweetSerializer
 
+from django.core.paginator import Paginator, EmptyPage
+
 import re
 import requests
 
@@ -156,9 +158,22 @@ def add_tweet(request):
 def get_tweets(request):
 
     tweet = Tweet.objects.all().order_by('-id')
-    serializer = TweetSerializer(tweet, many=True)
 
-    return Response(serializer.data)
+    p = Paginator(tweet, 4)
+    try:
+        page_num = request.query_params['page']
+    except:
+        page_num = 1
+    try:
+        page = p.page(page_num)
+    except EmptyPage:
+        page = p.page(1)
+    serializer = TweetSerializer(page, many=True)
+
+    disaster_type = Tweet.objects.values("disaster_type").distinct()
+    tweet_state = Tweet.objects.values("tweet_state").distinct()
+
+    return Response([serializer.data, p.num_pages, disaster_type, tweet_state])
 
 
 # To get the tweets of the state
