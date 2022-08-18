@@ -1,0 +1,46 @@
+.twitterIcon{
+    height: 30px;
+    width: auto;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.cell {
+    flex: 1 1 10px;
+}
+.heading{
+    text-align: left;
+    margin-left: 25px;
+}
+
+.subheading{
+    font-size: 18px;
+    font-weight: bold;
+    padding-right: 10px;
+    padding-left: 25px;
+    text-align: left;
+}
+
+.subheading-content{
+    font-size: 18px;
+    padding-left: 5px;
+}
+
+.area-subheading-content{
+    font-size: 18px;
+    margin-top: 0px;
+    padding-left: 25px;
+}
+
+.media-parent{
+    margin-left: 25px;
+}
+
+.media-section{
+    width: 290px !important;
+    height: 350px !important;
+    object-fit: cover !important;
+}

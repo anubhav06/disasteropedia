@@ -10,10 +10,21 @@ export const AuthProvider = ({children}) => {
     let [loading, setLoading] = useState(true)
     let [tweets, setTweets] = useState([])
 
+    let [pageNo, setPageNo] = useState(1)
+    let [pageCount, setPageCount] = useState(0)
+
+    let [disasterType, setDisasterType] = useState([])
+    let [disasterArea, setDisasterArea] = useState([])
 
     // Context data for AuthContext so that it can be used in other pages
     let contextData = {
-        tweets:tweets,
+        tweets: tweets,
+        pageCount: pageCount,
+        disasterType: disasterType,
+        disasterArea: disasterArea,
+        setPageNo: setPageNo,
+        setTweets: setTweets,
+        setPageCount: setPageCount,
     }
 
 
@@ -21,17 +32,18 @@ export const AuthProvider = ({children}) => {
     useEffect(()=> {
 
         // --------------------------- updateToken method  ----------------------------------------
-        // To update the access token
         let updateTweet = async ()=> {
-
-            // Make a post request to the api with the refresh token to update the access token
-            let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/get-tweets/`, {
+            // Make a post request to the api to update the tweets
+            let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/get-tweets/?page=${pageNo}`, {
                 method:'GET'
             })
             let data = await response.json()
             
             if (response.status === 200) {   
-                setTweets(data)
+                setTweets(data[0])
+                setPageCount(data[1])
+                setDisasterType(data[2])
+                setDisasterArea(data[3])
             }else{
                 console.log('ERROR: Getting tweet data from server')
             }
@@ -55,7 +67,7 @@ export const AuthProvider = ({children}) => {
         // Clear the interval after firing preventing re-initializing every time, refer to docs for more details
         return ()=> clearInterval(interval)
 
-    }, [loading])
+    }, [loading, pageNo])
 
     return(
         <AuthContext.Provider value={contextData} >
