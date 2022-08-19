@@ -1,6 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Dirt&display=swap');
+
+*{
+    font-family: 'Poppins', sans-serif;
+}
 .twitterIcon{
     height: 30px;
     width: auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
 .row {
@@ -8,12 +16,19 @@
     flex-wrap: wrap;
 }
 
+.area-row {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 20px;
+}
 .cell {
     flex: 1 1 10px;
 }
 .heading{
     text-align: left;
     margin-left: 25px;
+    text-decoration: underline;
+    color: rgb(246, 53, 220);
 }
 
 .subheading{
@@ -32,7 +47,8 @@
 .area-subheading-content{
     font-size: 18px;
     margin-top: 0px;
-    padding-left: 25px;
+    padding-left: 5px;
+    line-height: 0.8;
 }
 
 .media-parent{
@@ -43,4 +59,50 @@
     width: 290px !important;
     height: 350px !important;
     object-fit: cover !important;
+}
+
+.flex-container {
+    display: flex;
+    padding-right: 25px;
+    margin-right: 5px;
+    /* border-bottom: 1px solid black; */
+}
+
+.flex-container>div {
+    margin: 5px;
+    padding: 5px;
+}
+.tweet-date{
+    padding-bottom: 0px;
+    color: rgb(214, 169, 55);
+}
+a:visited, a:active, a:link{
+    color: initial;
+    text-decoration: none;
+}
+
+.media-top{
+    width: 80%;
+    margin-left: 25px; 
+}
+
+.pagination{
+    margin-top: 10px;
+}
+
+.main-heading{
+    font-family: 'Rubik Dirt', cursive;
+    font-size: 32px;
+    color: blueviolet;
+    font-weight: 500;
+}
+
+.location-dropdown{
+    margin-top: 15px;
+    width: 75%;
+}
+
+.top-icons{
+    margin-top: 15px;
+    padding-top: 5px;
 }

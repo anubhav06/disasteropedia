@@ -28,7 +28,9 @@ export const AuthProvider = ({children}) => {
         setPageNo: setPageNo,
         setTweets: setTweets,
         setPageCount: setPageCount,
-        setQueryState: setQueryState
+        setDisasterType: setDisasterType,
+        setDisasterArea: setDisasterArea,
+        setQueryState: setQueryState,
     }
 
 
