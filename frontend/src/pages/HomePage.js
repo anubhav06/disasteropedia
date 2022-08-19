@@ -193,7 +193,7 @@ const HomePage = () => {
                             <div>
                                 <a href={tweet.link}>
                                     <p className='tweet-text'> "{tweet.text}" </p>
-                                    <p className='tweet-date'> {tweet.created_at.split("T")[1].slice(0, -4)} • {tweet.created_at.split("T")[0]} </p>
+                                    <p className='tweet-date'> {tweet.created_at.split("T")[1].slice(0, -9)} • {tweet.created_at.split("T")[0]} </p>
                                 </a>
                             </div>  
                             
