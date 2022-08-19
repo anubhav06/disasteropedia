@@ -11,8 +11,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
-
-
+from decouple import config
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,16 +21,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-r!c4ur$9yh*8gct65=nfrr$+05atj!air+zih4$al#(3u4hdl2'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [config('BACKEND_HOST')]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://127.0.0.1:8000',
-    'http://localhost:3000'
+    config('CORS_ORIGIN_1'),
+    config('CORS_ORIGIN_2')
 ]
 
 # Application definition
@@ -45,8 +45,6 @@ INSTALLED_APPS = [
 
     'portal.apps.PortalConfig',
 
-    'rest_framework',
-    'rest_framework_simplejwt.token_blacklist',
     'corsheaders'
 
 ]
@@ -120,7 +118,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
@@ -146,3 +144,10 @@ import spacy
 # Refer here for more info: https://spacy.io/usage#gpu
 spacy.prefer_gpu()
 nlp = spacy.load("en_core_web_sm")
+
+
+
+# https://github.com/heroku/django-heroku/issues/39
+if 'I_AM_HEROKU' in os.environ:
+    import django_heroku
+    django_heroku.settings(locals())
