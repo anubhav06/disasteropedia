@@ -57,7 +57,7 @@ def validate_tweet(text):
         # Check if the place name is a state of India
         find_state = re.findall("assam|andhra pradesh|arunachal pradesh|bihar|chhattisgarh|delhi|goa|gujarat|haryana|himachal pradesh|jammu & kashmir|jharkhand|karnataka|kerala|madhya pradesh|maharashtra|manipur|meghalaya|mizoram|nagaland|odisha|<span class=\"searchmatch\">odisha|punjab|rajasthan|sikkim|tamil nadu|telangana|tripura|uttar pradesh|west bengal|uttarakhand", str(place).lower())
         if len(find_state) != 0:
-            return find_state[0]
+            return find_state[0].title()
 
         params = {
             'action': 'query',
@@ -83,21 +83,21 @@ def validate_tweet(text):
             # Refer to wikipedia's API to understand the API parameters in detail: https://www.mediawiki.org/wiki/API:Search
             tweet_state = ''
             for page in data['query']['search']:
-                if ('Indian state' not in page['snippet'] and ', India' not in page['snippet']):
+                if ('Indian state of' not in page['snippet'] and ', India' not in page['snippet']):
                     tweet_state = False
                 else:
                     # Find the name of the state in India
-                    state = re.findall("indian state of assam|andhra pradesh|arunachal pradesh|bihar|chhattisgarh|delhi|goa|gujarat|haryana|himachal pradesh|jammu & kashmir|jharkhand|karnataka|kerala|madhya pradesh|maharashtra|manipur|meghalaya|mizoram|nagaland|odisha|<span class=\"searchmatch\">odisha|punjab|rajasthan|sikkim|tamil nadu|telangana|tripura|uttar pradesh|west bengal|uttarakhand", page['snippet'].lower())
+                    state = re.findall("assam|andhra pradesh|arunachal pradesh|bihar|chhattisgarh|delhi|goa|gujarat|haryana|himachal pradesh|jammu & kashmir|jharkhand|karnataka|kerala|madhya pradesh|maharashtra|manipur|meghalaya|mizoram|nagaland|odisha|<span class=\"searchmatch\">odisha|punjab|rajasthan|sikkim|tamil nadu|telangana|tripura|uttar pradesh|west bengal|uttarakhand", page['snippet'].lower())
                     if len(state) != 0:
-                        tweet_state = state[0]
+                        tweet_state = state[0].title()
                         return tweet_state
                     else:
-                        state = re.findall("assam|andhra pradesh|arunachal pradesh|bihar|chhattisgarh|delhi|goa|gujarat|haryana|himachal pradesh|jammu & kashmir|jharkhand|karnataka|kerala|madhya pradesh|maharashtra|manipur|meghalaya|mizoram|nagaland|odisha|punjab|rajasthan|sikkim|tamil nadu|telangana|tripura|uttar pradesh|west bengal|uttarakhand, india", page['snippet'].lower())
-                        if len(state) != 0:
-                            tweet_state = state[0].title()
-                            return tweet_state
-                        else:
-                            tweet_state = 'Unidentified'
+                        # state = re.findall("assam|andhra pradesh|arunachal pradesh|bihar|chhattisgarh|delhi|goa|gujarat|haryana|himachal pradesh|jammu & kashmir|jharkhand|karnataka|kerala|madhya pradesh|maharashtra|manipur|meghalaya|mizoram|nagaland|odisha|punjab|rajasthan|sikkim|tamil nadu|telangana|tripura|uttar pradesh|west bengal|uttarakhand, india", page['snippet'].lower())
+                        # if len(state) != 0:
+                        #     tweet_state = state[0].title()
+                        #     return tweet_state
+                        # else:
+                        tweet_state = 'Unidentified'
 
         except:
             print('🔴 ERROR: In tweet filteration level #3')
@@ -120,11 +120,11 @@ def add_tweet(request):
     # Remove the links from the text
     text = re.sub(r'http\S+', '', text)
     # Remove the hashtag from the text
-    text = re.sub('#', '', text)
+    formatted_text = re.sub('#', '', text)
 
  
     # Validate if the tweet is relevant i.e. if it is related to a disaster, by passing it through the "algorithm"
-    result = validate_tweet(text)
+    result = validate_tweet(formatted_text)
     if result is False:
         print('Discarded tweet-', text, 'by @', username)
         return Response({'ℹ️ Tweet irrelevant'})
@@ -133,8 +133,8 @@ def add_tweet(request):
     disaster_type = re.findall("flood|floods|flooded|flooding|wildfire|wildfires|eartquake|earthquakes|tornado|tornadoes|tornados|hurricane|hurricanes|drought|droughts|tsunami|tsunamis|landslide|landslides", text.lower())[0]
     
     # Trim the plural forms of the disaster type
-    if disaster_type.endswith('es'):
-        disaster_type = disaster_type[:-2]
+    if disaster_type == 'tornadoes':
+        disaster_type = 'tornado'
     elif disaster_type.endswith('s'):
         disaster_type = disaster_type[:-1]
     elif disaster_type.endswith('ed'):
@@ -159,8 +159,10 @@ def get_state_tweets(request, state):
     
     if state == 'All':
         tweet = Tweet.objects.all().order_by('-id')
+        disaster_type = Tweet.objects.values("disaster_type").distinct()
     else:
         tweet = Tweet.objects.filter(tweet_state = state).order_by('-id')
+        disaster_type = Tweet.objects.filter(tweet_state = state).values("disaster_type").distinct()
     
     # Pagination. Limit results to 4 per page
     p = Paginator(tweet, 4)
@@ -174,7 +176,6 @@ def get_state_tweets(request, state):
         page = p.page(1)
         
     serializer = TweetSerializer(page, many=True)
-    disaster_type = Tweet.objects.values("disaster_type").distinct()
     tweet_state = Tweet.objects.values("tweet_state").distinct()
 
     return Response([serializer.data, p.num_pages, disaster_type, tweet_state])
