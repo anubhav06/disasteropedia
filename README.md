@@ -27,7 +27,7 @@ Split the terminal in two and follow the below steps in different terminals
 
 ## Documentation 📖
 
-In progress. Will be added soon.
+[In progress.](https://github.com/anubhav06/disasteropedia/wiki) Will be completed soon.
 
 
 ## LICENSE ⚖️
