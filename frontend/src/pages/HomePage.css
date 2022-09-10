@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Rubik+Dirt&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap');
 *{
     font-family: 'Poppins', sans-serif;
 }
@@ -91,10 +90,9 @@ a:visited, a:active, a:link{
 }
 
 .main-heading{
-    font-family: 'Rubik Dirt', cursive;
+    font-family: 'Ubuntu', sans-serif;
     font-size: 32px;
-    color: #8a2be2;
-    font-weight: 500;
+    font-weight: 700;
 }
 
 .location-dropdown{
@@ -105,4 +103,41 @@ a:visited, a:active, a:link{
 .top-icons{
     margin-top: 15px;
     padding-top: 5px;
+    transform: scale(1.1);
+}
+
+@media screen and (max-width: 470px) {
+    .main-heading {
+        font-family: 'Ubuntu', sans-serif;
+        font-size: 22.5px;
+        font-weight: 700;
+        padding-top: 15px;
+    }
+
+    .parent-heading{
+        width: 50% !important;
+        padding-left: 25px !important;
+    }
+
+    .parent-location-drowpdown{
+        width: 72.5% !important;
+        padding-top: 0px !important;
+    }
+
+    .location-dropdown {
+        width: 80%;
+        transform: scale(0.75);
+        margin-top: 0px;
+        margin-left: -8px;
+    }
+
+    .parent-top-icons{
+        margin-top: -80px;
+        padding-right: 5px !important;
+    }
+
+    .top-icons {
+        transform: scale(1);
+    }
+
 }

@@ -66,10 +66,10 @@ const HomePage = () => {
     return (
         <div>
             <Grid2 container spacing={2}>
-                <Grid2 xs={6}>
+                <Grid2 xs={6} className='parent-heading'>
                     <h1 className='main-heading'>disasteropedia</h1>
                 </Grid2>
-                <Grid2 xs={3}>
+                <Grid2 xs={3} className='parent-location-drowpdown'>
                     <Box sx={{ minWidth: 120 }} className='location-dropdown'>
                     <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">Location</InputLabel>
@@ -88,7 +88,7 @@ const HomePage = () => {
                     </FormControl>
                     </Box>
                 </Grid2>
-                <Grid2 xs={1} textAlign='right'>
+                <Grid2 xs={1} textAlign='right' className='parent-top-icons'>
                     <IconButton
                         className='top-icons'
                         sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
@@ -97,7 +97,7 @@ const HomePage = () => {
                         <HelpOutlineOutlinedIcon fontSize='medium' className='top-icons' />
                     </IconButton>
                 </Grid2>
-                <Grid2 xs={1} textAlign='left'>
+                <Grid2 xs={1} textAlign='left' className='parent-top-icons'>
                     <IconButton
                         className='top-icons'
                         sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
