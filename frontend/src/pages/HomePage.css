@@ -15,6 +15,10 @@
     flex-wrap: wrap;
 }
 
+.row2{
+    margin-top: -20px;
+}
+
 .area-row {
     display: flex;
     flex-wrap: wrap;
@@ -26,25 +30,27 @@
 .heading{
     text-align: left;
     margin-left: 25px;
-    text-decoration: underline;
-    color: rgb(246, 53, 220);
+    color: #3c1874;
+    font-size: 22.50px;
 }
 
 .subheading{
-    font-size: 18px;
+    font-size: 15px;
     font-weight: bold;
     padding-right: 10px;
     padding-left: 25px;
     text-align: left;
+    color: #932432;
 }
 
 .subheading-content{
-    font-size: 18px;
+    font-size: 15px;
     padding-left: 5px;
+    color: #283747;
 }
 
 .area-subheading-content{
-    font-size: 18px;
+    font-size: 15px;
     margin-top: 0px;
     padding-left: 5px;
     line-height: 0.8;
@@ -71,9 +77,17 @@
     margin: 5px;
     padding: 5px;
 }
+
+.tweet-text{
+    font-size: 15px;
+    color: #283747;
+    margin-bottom: -7.5px;
+}
+
 .tweet-date{
+    font-size: 15px;
     padding-bottom: 0px;
-    color: rgb(214, 169, 55);
+    color: #932432;
 }
 a:visited, a:active, a:link{
     color: initial;
@@ -86,18 +100,41 @@ a:visited, a:active, a:link{
 }
 
 .pagination{
-    margin-top: 10px;
+    margin-top: 10px;   
+}
+
+/* To change the background color of Pagination buttons */
+.css-1to7aaw-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected{
+    background-color: #3c1874 !important;
 }
 
 .main-heading{
     font-family: 'Ubuntu', sans-serif;
     font-size: 32px;
     font-weight: 700;
+    color: #de354c;
 }
 
 .location-dropdown{
     margin-top: 15px;
     width: 75%;
+    color: #932432 !important;
+}
+
+.location-dropdown-select{
+    color: #283747 !important;
+}
+/* To change the border color of the "Location" dropdown */
+.css-1d3z3hw-MuiOutlinedInput-notchedOutline{
+    border-color: #283747 !important;
+}
+/* To change around the width of "Location" text */
+.css-1in441m{
+    width: 60px !important  ;
+}
+
+#demo-simple-select-label{
+    color: #283747;
 }
 
 .top-icons{

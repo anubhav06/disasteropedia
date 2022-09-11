@@ -61,6 +61,25 @@ const HomePage = () => {
         }
     };
 
+    // To change date from YYYY-MM-DD type to DD-MM-YYYY type
+    function getDate(date) {
+
+        let day = date.split('-')[2];
+        let month = date.split('-')[1];
+        let year = date.split('-')[0];
+        
+        let newDate = day + '-' + month + '-' + year;
+        return newDate;
+    }
+
+    // To check if we need to add a comma after the list of items
+    function addComma(index, array) {
+        if (index < array.length - 1) {
+            return ","
+        }
+        return ""
+    }
+
     console.log('tweet: ', tweets)
 
     return (
@@ -79,6 +98,7 @@ const HomePage = () => {
                             value={queryState}
                             label="Age"
                             onChange={handleSelectChange}
+                            className="location-dropdown-select"
                         >
                         <MenuItem value={'All'}>All India</MenuItem>
                         {disasterArea.map((area) => (
@@ -111,26 +131,26 @@ const HomePage = () => {
 
             </Grid2>
 
-            <hr/>
-            <Grid2 container spacing={5}>
+            {/* <hr/> */}
+            <Grid2 container spacing={10}>
                 <Grid2 xs={6}>
                     {/* ------------------------ PROCESSED DATA SECTION ------------------------- */}
                     <div>
                         <h2 className='heading'> Processed Data </h2>
                         <div className='row'>
                             <p className='subheading'> Calamity Type: </p>
-                            {disasterType.map((disaster) => (
+                            {disasterType.map((disaster, index) => (
                                 <p key={disaster.disaster_type} className='subheading-content'>
-                                    {disaster.disaster_type},
+                                    {disaster.disaster_type} {addComma(index, disasterType)}
                                 </p>
                             ))}
                         </div>
-                        <div>
+                        <div className='row2'>
                             <p className='subheading'> Areas affected: </p>
                             <div className='area-row'>
-                            {disasterArea.map((area) => (
+                            {disasterArea.map((area, index) => (
                                 <p key={area.tweet_state} className='area-subheading-content'>
-                                    {area.tweet_state},
+                                    {area.tweet_state} {addComma(index, disasterArea)}
                                 </p>
                             ))}
                             </div>
@@ -140,7 +160,7 @@ const HomePage = () => {
                     {/* ------------------------ LATEST MEDIA SECTION ------------------------------- */}
                     <div>
                         <h2 className='heading'> Latest Media </h2>
-                        <ImageList sx={{ width: 600, height: 450 }} className="media-parent">
+                        <ImageList sx={{ width: 605, height: 450 }} className="media-parent">
                             {tweets.map((tweet) => (
                                 <ImageListItem key={tweet.id}>
                                 {tweet.media_type === 'photo'
@@ -160,18 +180,19 @@ const HomePage = () => {
                                     </video>
                                     
                                 }
-                                <ImageListItemBar
+                                <ImageListItemBar   
                                     title={"Twitter"}
                                     subtitle={`@${tweet.username}`}
+                                    sx={{ width: 290 }}
                                     actionIcon={
                                     <IconButton
-                                        sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                                        sx={{ color: 'white' }}
                                             aria-label={`info about ${tweet.link}`}
                                             href={tweet.link}
                                             rel="noopener noreferrer"
                                             target="_blank"
                                     >
-                                        <InfoIcon color='primary'/>
+                                        <InfoIcon htmlColor='#f3f3f3'/>
                                     </IconButton>
                                     }
                                 />
@@ -192,8 +213,12 @@ const HomePage = () => {
                             </div>
                             <div>
                                 <a href={tweet.link}>
-                                    <p className='tweet-text'> "{tweet.text}" </p>
-                                    <p className='tweet-date'> {tweet.created_at.split("T")[1].slice(0, -9)} • {tweet.created_at.split("T")[0]} </p>
+                                    <p className='tweet-text'>
+                                        "{tweet.text}"
+                                    </p>
+                                    <p className='tweet-date'>
+                                        {tweet.created_at.split("T")[1].slice(0, -9)} • {getDate(tweet.created_at.split("T")[0])}
+                                    </p>
                                 </a>
                             </div>  
                             
