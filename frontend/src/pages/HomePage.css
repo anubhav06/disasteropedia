@@ -124,7 +124,7 @@ a:visited, a:active, a:link{
 
 .main-heading{
     font-family: 'Ubuntu', sans-serif;
-    font-size: 32px;
+    font-size: 36px;
     font-weight: 700;
     color: #de354c;
 }
@@ -133,6 +133,7 @@ a:visited, a:active, a:link{
     margin-top: 15px;
     width: 75%;
     color: #932432 !important;
+    transform: scale(0.8);
 }
 
 .location-dropdown-select{
@@ -198,7 +199,7 @@ a:visited, a:active, a:link{
     
     .main-heading {
         font-family: 'Ubuntu', sans-serif;
-        font-size: 22.5px;
+        font-size: 25px;
         font-weight: 700;
         padding-top: 15px;
     }
@@ -221,7 +222,7 @@ a:visited, a:active, a:link{
     }
 
     .parent-top-icons{
-        margin-top: -80px;
+        margin-top: -85px;
         padding-right: 5px !important;
     }
 

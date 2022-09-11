@@ -1,0 +1,32 @@
+h1{
+    color: #d3354c;
+    margin-bottom: 50px;
+}
+
+.question{
+    font-weight: bold;
+    color: #3c1874;
+    font-size: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-top: 40px;
+    margin-bottom: 10px;
+}
+
+.answer{
+    color: #283747;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.support-subheading{
+    margin-top: 15px;
+}
+
+@media screen and (max-width: 470px) {
+    .support-subheading{
+        text-align: left;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}

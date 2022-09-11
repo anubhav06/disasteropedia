@@ -87,7 +87,7 @@ const HomePage = () => {
         <div>
             <Grid2 container spacing={2} className='navbar-parent-grid'>
                 <Grid2 xs={6} className='parent-heading'>
-                    <h1 className='main-heading'>disasteropedia</h1>
+                    <h1 className='main-heading'> disasteropedia</h1>
                 </Grid2>
                 <Grid2 xs={3} className='parent-location-drowpdown'>
                     <Box sx={{ minWidth: 120 }} className='location-dropdown'>
@@ -113,7 +113,7 @@ const HomePage = () => {
                     <IconButton
                         className='top-icons'
                         sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                        href={'info'}
+                        href={'/about'}
                     >
                         <HelpOutlineOutlinedIcon fontSize='medium' className='top-icons' />
                     </IconButton>
