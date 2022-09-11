@@ -19,6 +19,7 @@ import Select from '@mui/material/Select';
 
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import GitHubIcon from '@mui/icons-material/GitHub';
+import LoadingIcon from '../assets/loading.gif';
 
 const HomePage = () => {
 
@@ -84,7 +85,7 @@ const HomePage = () => {
 
     return (
         <div>
-            <Grid2 container spacing={2}>
+            <Grid2 container spacing={2} className='navbar-parent-grid'>
                 <Grid2 xs={6} className='parent-heading'>
                     <h1 className='main-heading'>disasteropedia</h1>
                 </Grid2>
@@ -102,7 +103,7 @@ const HomePage = () => {
                         >
                         <MenuItem value={'All'}>All India</MenuItem>
                         {disasterArea.map((area) => (
-                            <MenuItem value={area.tweet_state}>{area.tweet_state}</MenuItem>
+                            <MenuItem key={area.tweet_state} value={area.tweet_state}>{area.tweet_state}</MenuItem>
                         ))}
                         </Select>
                     </FormControl>
@@ -133,17 +134,19 @@ const HomePage = () => {
 
             {/* <hr/> */}
             <Grid2 container spacing={10}>
-                <Grid2 xs={6}>
+                <Grid2 xs={6} className='left-section'>
                     {/* ------------------------ PROCESSED DATA SECTION ------------------------- */}
                     <div>
                         <h2 className='heading'> Processed Data </h2>
                         <div className='row'>
-                            <p className='subheading'> Calamity Type: </p>
+                            <p className='subheading'> Calamity type: </p>
+                            <div className='data-row' >
                             {disasterType.map((disaster, index) => (
-                                <p key={disaster.disaster_type} className='subheading-content'>
+                                <p key={disaster.disaster_type} className='data-subheading-content'>
                                     {disaster.disaster_type} {addComma(index, disasterType)}
                                 </p>
                             ))}
+                            </div>
                         </div>
                         <div className='row2'>
                             <p className='subheading'> Areas affected: </p>
@@ -160,7 +163,7 @@ const HomePage = () => {
                     {/* ------------------------ LATEST MEDIA SECTION ------------------------------- */}
                     <div>
                         <h2 className='heading'> Latest Media </h2>
-                        <ImageList sx={{ width: 605, height: 450 }} className="media-parent">
+                        <ImageList className="media-parent">
                             {tweets.map((tweet) => (
                                 <ImageListItem key={tweet.id}>
                                 {tweet.media_type === 'photo'
@@ -204,6 +207,7 @@ const HomePage = () => {
                 {/* ----------------------------- LATEST POSTS SECTION --------------------------------------- */}
                 <Grid2 xs={6}
                     textAlign={'left'}
+                    className='right-section'
                 >
                     <h2 className='heading'> Latest Posts </h2>
                     {tweets.map((tweet) => (
@@ -211,7 +215,7 @@ const HomePage = () => {
                             <div>
                                 <img src={TwitterIcon} alt='twitter' className='twitterIcon' />
                             </div>
-                            <div>
+                            <div className='tweet'>
                                 <a href={tweet.link}>
                                     <p className='tweet-text'>
                                         "{tweet.text}"
@@ -224,7 +228,11 @@ const HomePage = () => {
                             
                         </div>
                     ))}
-                    <Pagination count={pageCount} color="primary" onChange={handleChange} className='pagination'/>
+                    <Pagination count={pageCount} color="primary" onChange={handleChange} className='pagination' />
+                    <div className='loading-row'>
+                        <img src={LoadingIcon} alt='idk' className='loading-icon'/>
+                        <p className='loading-text'> LIVE : Data is being updated in real time </p>
+                    </div>
                 </Grid2>
             </Grid2>
             
