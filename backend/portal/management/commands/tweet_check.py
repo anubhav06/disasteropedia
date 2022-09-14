@@ -8,7 +8,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
 
         # Max no of tweets we want to store in database
-        max_tweets_count = 45
+        max_tweets_count = 100
 
         all_tweets = Tweet.objects.all()        
         tweets_deleted = 0
