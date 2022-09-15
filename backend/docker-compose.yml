@@ -2,10 +2,10 @@ version: "3.9"
 
 services:
   web:
-    container_name: disasteropedia
+    container_name: disasteropedia-backend
     build:
       context: .
-    image: disasteropedia
+    image: disasteropedia-backend
     command: python3 manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/usr/app
