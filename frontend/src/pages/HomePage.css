@@ -11,8 +11,7 @@
 }
 
 .row {
-    display: flex;
-    flex-wrap: wrap;
+    display: block;
 }
 
 .row2{
@@ -22,8 +21,8 @@
 .data-row{
     display: flex;
     flex-wrap: wrap;
-    /* padding-left: 20px; */
-    padding-top: 20.5px;
+    padding-left: 20px;
+    /* padding-top: 20.5px; */
 }
 
 .area-row {
@@ -206,6 +205,7 @@ a:visited, a:active, a:link{
 
     .parent-heading{
         width: 50% !important;
+        height: 90px;
         padding-left: 25px !important;
     }
 
