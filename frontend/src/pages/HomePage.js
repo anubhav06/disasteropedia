@@ -19,6 +19,7 @@ import Select from '@mui/material/Select';
 
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import GitHubIcon from '@mui/icons-material/GitHub';
+import LoadingIcon from '../assets/loading.gif';
 
 const HomePage = () => {
 
@@ -61,15 +62,34 @@ const HomePage = () => {
         }
     };
 
+    // To change date from YYYY-MM-DD type to DD-MM-YYYY type
+    function getDate(date) {
+
+        let day = date.split('-')[2];
+        let month = date.split('-')[1];
+        let year = date.split('-')[0];
+        
+        let newDate = day + '-' + month + '-' + year;
+        return newDate;
+    }
+
+    // To check if we need to add a comma after the list of items
+    function addComma(index, array) {
+        if (index < array.length - 1) {
+            return ","
+        }
+        return ""
+    }
+
     console.log('tweet: ', tweets)
 
     return (
         <div>
-            <Grid2 container spacing={2}>
-                <Grid2 xs={6}>
-                    <h1 className='main-heading'>disasteropedia</h1>
+            <Grid2 container spacing={2} className='navbar-parent-grid'>
+                <Grid2 xs={6} className='parent-heading'>
+                    <h1 className='main-heading'> disasteropedia</h1>
                 </Grid2>
-                <Grid2 xs={3}>
+                <Grid2 xs={3} className='parent-location-drowpdown'>
                     <Box sx={{ minWidth: 120 }} className='location-dropdown'>
                     <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">Location</InputLabel>
@@ -79,25 +99,26 @@ const HomePage = () => {
                             value={queryState}
                             label="Age"
                             onChange={handleSelectChange}
+                            className="location-dropdown-select"
                         >
                         <MenuItem value={'All'}>All India</MenuItem>
                         {disasterArea.map((area) => (
-                            <MenuItem value={area.tweet_state}>{area.tweet_state}</MenuItem>
+                            <MenuItem key={area.tweet_state} value={area.tweet_state}>{area.tweet_state}</MenuItem>
                         ))}
                         </Select>
                     </FormControl>
                     </Box>
                 </Grid2>
-                <Grid2 xs={1} textAlign='right'>
+                <Grid2 xs={1} textAlign='right' className='parent-top-icons'>
                     <IconButton
                         className='top-icons'
                         sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                        href={'info'}
+                        href={'/about'}
                     >
                         <HelpOutlineOutlinedIcon fontSize='medium' className='top-icons' />
                     </IconButton>
                 </Grid2>
-                <Grid2 xs={1} textAlign='left'>
+                <Grid2 xs={1} textAlign='left' className='parent-top-icons'>
                     <IconButton
                         className='top-icons'
                         sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
@@ -111,26 +132,28 @@ const HomePage = () => {
 
             </Grid2>
 
-            <hr/>
-            <Grid2 container spacing={5}>
-                <Grid2 xs={6}>
+            {/* <hr/> */}
+            <Grid2 container spacing={10}>
+                <Grid2 xs={6} className='left-section'>
                     {/* ------------------------ PROCESSED DATA SECTION ------------------------- */}
                     <div>
                         <h2 className='heading'> Processed Data </h2>
                         <div className='row'>
-                            <p className='subheading'> Calamity Type: </p>
-                            {disasterType.map((disaster) => (
-                                <p key={disaster.disaster_type} className='subheading-content'>
-                                    {disaster.disaster_type},
+                            <p className='subheading'> Calamity type: </p>
+                            <div className='data-row' >
+                            {disasterType.map((disaster, index) => (
+                                <p key={disaster.disaster_type} className='data-subheading-content'>
+                                    {disaster.disaster_type} {addComma(index, disasterType)}
                                 </p>
                             ))}
+                            </div>
                         </div>
-                        <div>
+                        <div className='row2'>
                             <p className='subheading'> Areas affected: </p>
                             <div className='area-row'>
-                            {disasterArea.map((area) => (
+                            {disasterArea.map((area, index) => (
                                 <p key={area.tweet_state} className='area-subheading-content'>
-                                    {area.tweet_state},
+                                    {area.tweet_state} {addComma(index, disasterArea)}
                                 </p>
                             ))}
                             </div>
@@ -140,7 +163,7 @@ const HomePage = () => {
                     {/* ------------------------ LATEST MEDIA SECTION ------------------------------- */}
                     <div>
                         <h2 className='heading'> Latest Media </h2>
-                        <ImageList sx={{ width: 600, height: 450 }} className="media-parent">
+                        <ImageList className="media-parent">
                             {tweets.map((tweet) => (
                                 <ImageListItem key={tweet.id}>
                                 {tweet.media_type === 'photo'
@@ -160,18 +183,19 @@ const HomePage = () => {
                                     </video>
                                     
                                 }
-                                <ImageListItemBar
+                                <ImageListItemBar   
                                     title={"Twitter"}
                                     subtitle={`@${tweet.username}`}
+                                    sx={{ width: 290 }}
                                     actionIcon={
                                     <IconButton
-                                        sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                                        sx={{ color: 'white' }}
                                             aria-label={`info about ${tweet.link}`}
                                             href={tweet.link}
                                             rel="noopener noreferrer"
                                             target="_blank"
                                     >
-                                        <InfoIcon color='primary'/>
+                                        <InfoIcon htmlColor='#f3f3f3'/>
                                     </IconButton>
                                     }
                                 />
@@ -183,6 +207,7 @@ const HomePage = () => {
                 {/* ----------------------------- LATEST POSTS SECTION --------------------------------------- */}
                 <Grid2 xs={6}
                     textAlign={'left'}
+                    className='right-section'
                 >
                     <h2 className='heading'> Latest Posts </h2>
                     {tweets.map((tweet) => (
@@ -190,16 +215,24 @@ const HomePage = () => {
                             <div>
                                 <img src={TwitterIcon} alt='twitter' className='twitterIcon' />
                             </div>
-                            <div>
+                            <div className='tweet'>
                                 <a href={tweet.link}>
-                                    <p className='tweet-text'> "{tweet.text}" </p>
-                                    <p className='tweet-date'> {tweet.created_at.split("T")[1].slice(0, -9)} • {tweet.created_at.split("T")[0]} </p>
+                                    <p className='tweet-text'>
+                                        "{tweet.text}"
+                                    </p>
+                                    <p className='tweet-date'>
+                                        {tweet.created_at.split("T")[1].slice(0, -9)} • {getDate(tweet.created_at.split("T")[0])}
+                                    </p>
                                 </a>
                             </div>  
                             
                         </div>
                     ))}
-                    <Pagination count={pageCount} color="primary" onChange={handleChange} className='pagination'/>
+                    <Pagination count={pageCount} color="primary" onChange={handleChange} className='pagination' />
+                    <div className='loading-row'>
+                        <img src={LoadingIcon} alt='idk' className='loading-icon'/>
+                        <p className='loading-text'> LIVE : Data is being updated in real time </p>
+                    </div>
                 </Grid2>
             </Grid2>
             

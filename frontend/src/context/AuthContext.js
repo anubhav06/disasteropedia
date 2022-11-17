@@ -65,7 +65,7 @@ export const AuthProvider = ({children}) => {
             updateTweet()
         }
 
-        let thirtySeconds = 1000 * 30
+        let thirtySeconds = 1000 * 30 * 1000
 
         let interval =  setInterval(()=> {
             updateTweet()

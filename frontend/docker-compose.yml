@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  web:
+    container_name: disasteropedia-frontend
+    build:
+      context: .
+    image: disasteropedia-frontend
+    volumes:
+      - ./src:/app/src
+    ports:
+      - "3000:3000"
+    environment:
+      REACT_APP_BACKEND_URL: ${REACT_APP_BACKEND_URL}

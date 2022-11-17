@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  web:
+    container_name: disasteropedia-backend
+    build:
+      context: .
+    image: disasteropedia-backend
+    command: python3 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/usr/app
+    ports:
+      - "8000:8000"
+    environment:
+      SECRET_KEY: ${SECRET_KEY}
+      DEBUG: ${DEBUG}
+      CORS_ORIGIN_1: ${CORS_ORIGIN_1}
+      CORS_ORIGIN_2: ${CORS_ORIGIN_2}
+      BACKEND_HOST: ${BACKEND_HOST}

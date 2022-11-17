@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Rubik+Dirt&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap');
 *{
     font-family: 'Poppins', sans-serif;
 }
@@ -12,8 +11,18 @@
 }
 
 .row {
+    display: block;
+}
+
+.row2{
+    margin-top: -10px;
+}
+
+.data-row{
     display: flex;
     flex-wrap: wrap;
+    padding-left: 20px;
+    /* padding-top: 20.5px; */
 }
 
 .area-row {
@@ -27,32 +36,41 @@
 .heading{
     text-align: left;
     margin-left: 25px;
-    text-decoration: underline;
-    color: rgb(246, 53, 220);
+    color: #3c1874;
+    font-size: 22.50px;
 }
 
 .subheading{
-    font-size: 18px;
+    font-size: 15px;
     font-weight: bold;
     padding-right: 10px;
     padding-left: 25px;
     text-align: left;
+    color: #932432;
 }
 
-.subheading-content{
-    font-size: 18px;
-    padding-left: 5px;
-}
-
-.area-subheading-content{
-    font-size: 18px;
+.data-subheading-content{
+    font-size: 15px;
     margin-top: 0px;
     padding-left: 5px;
     line-height: 0.8;
+    color: #283747;
+}
+
+.area-subheading-content{
+    font-size: 15px;
+    margin-top: 0px;
+    padding-left: 5px;
+    line-height: 0.8;
+    color: #283747;
 }
 
 .media-parent{
     margin-left: 25px;
+    margin-right: 25px;
+    max-width: 605px !important;
+    height: 450px;
+    width: 100% !important;
 }
 
 .media-section{
@@ -64,17 +82,24 @@
 .flex-container {
     display: flex;
     padding-right: 25px;
-    margin-right: 5px;
     /* border-bottom: 1px solid black; */
 }
 
 .flex-container>div {
-    margin: 5px;
-    padding: 5px;
+    margin: 1px 5px 1px 5px;
+    padding: 1px 5px 1px 5px;
 }
+
+.tweet-text{
+    font-size: 15px;
+    color: #283747;
+    margin-bottom: -7.5px;
+}
+
 .tweet-date{
+    font-size: 15px;
     padding-bottom: 0px;
-    color: rgb(214, 169, 55);
+    color: #932432;
 }
 a:visited, a:active, a:link{
     color: initial;
@@ -87,22 +112,187 @@ a:visited, a:active, a:link{
 }
 
 .pagination{
-    margin-top: 10px;
+    margin-top: 10px;   
 }
 
+/* To change the background color of Pagination buttons */
+.css-1to7aaw-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected{
+    background-color: #3c1874 !important;
+}
+
+
 .main-heading{
-    font-family: 'Rubik Dirt', cursive;
-    font-size: 32px;
-    color: #8a2be2;
-    font-weight: 500;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: #de354c;
 }
 
 .location-dropdown{
     margin-top: 15px;
     width: 75%;
+    color: #932432 !important;
+    transform: scale(0.8);
+}
+
+.location-dropdown-select{
+    color: #283747 !important;
+}
+/* To change the border color of the "Location" dropdown */
+.css-1d3z3hw-MuiOutlinedInput-notchedOutline{
+    border-color: #283747 !important;
+}
+/* To change around the width of "Location" text */
+.css-1in441m{
+    width: 60px !important  ;
+}
+
+#demo-simple-select-label{
+    color: #283747;
 }
 
 .top-icons{
     margin-top: 15px;
     padding-top: 5px;
+    transform: scale(1.1);
+}
+
+.loading-row{
+    padding-bottom: 20px;
+    display: flex;
+}
+
+.loading-icon{
+    padding-top: -20px;
+}
+
+.loading-text{
+    padding-top: 27px;
+    margin-left: -20px;
+    color: #de354c;
+}
+
+
+@media screen and (max-width: 470px) {
+
+    /* ------ NAVBAR SECTION ------- */
+    .navbar-parent-grid{
+        background-color: #3c1874;
+    }
+
+    .location-dropdown-select {
+        color: #f3f3f3 !important;
+    }
+
+    /* To change the border color of the "Location" dropdown */
+    .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+        border-color: #f3f3f3 !important;
+    }
+    /* To change the dropdown triangle button color */
+    .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon{
+        color: #f3f3f3 !important;
+    }
+    #demo-simple-select-label {
+        color: #f3f3f3;
+    }
+    
+    .main-heading {
+        font-family: 'Ubuntu', sans-serif;
+        font-size: 25px;
+        font-weight: 700;
+        padding-top: 15px;
+    }
+
+    .parent-heading{
+        width: 50% !important;
+        height: 90px;
+        padding-left: 25px !important;
+    }
+
+    .parent-location-drowpdown{
+        width: 72.5% !important;
+        padding-top: 0px !important;
+    }
+
+    .location-dropdown {
+        width: 80%;
+        transform: scale(0.65);
+        margin-top: 0px;
+        margin-left: -20px;
+    }
+
+    .parent-top-icons{
+        margin-top: -85px;
+        padding-right: 5px !important;
+    }
+
+    .top-icons {
+        transform: scale(1);
+        color: #f3f3f3;
+    }
+
+    /* --------- PROCESSED DATA SECTION ---------------- */
+    .left-section{
+        width: 100% !important;
+    }
+
+    .right-section{
+        width: 100% !important;
+    }
+
+    .heading{
+        font-size: 16.5px;
+    }
+
+    .subheading{
+        padding-left: 25px;
+        padding-right: 25px;
+        font-size: 14px;
+    }
+
+    .data-row, .area-row{
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-top: 0px;
+    }
+
+    .row2{
+        margin-top: 0px;
+    }
+
+    .area-subheading-content, .data-subheading-content{
+        font-size: 12.5px;
+    }
+
+    /* --------- LATEST MEDIA SECTION -------- */
+    .media-parent{
+        width: auto !important;
+    }
+
+    /* --------- LATEST POSTS SECTION --------- */
+
+    .flex-container{
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .pagination{
+        padding-left: 10px;
+    }
+
+    .loading-row{
+        margin-left: -25px !important;
+    }
+
+    .loading-text{
+        padding-right: 5px;
+    }
+
+    .tweet-text, .tweet-date{
+        font-size: 12.5px;
+    }
+
+    .twitterIcon{
+        height: 25px;
+    }
 }
